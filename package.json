@@ -1,0 +1,11 @@
+{
+    "name": "server-architecture",
+    "main": "index.ts",
+    "devDependencies": {
+        "@types/node": "^18"
+    },
+    "dependencies": {
+        "@pulumi/hcloud": "^1.17.0",
+        "@pulumi/pulumi": "^3.0.0"
+    }
+}
