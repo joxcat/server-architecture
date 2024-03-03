@@ -1,0 +1,5 @@
+config:
+  server-architecture:sftp.host:
+    secure: AAABAPOpeQEKuIeYdXsxZnRCAUEWq2mhOBQhDnza9BAycWFAc7aJvfNch2xsN/Oa+OADgt8Ce3PTxQ==
+  server-architecture:sftp.port:
+    secure: AAABAM+XbENkiaRxLvJddVaWhaIE0p/xoIIgS0143YCHaQ==
