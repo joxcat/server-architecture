@@ -1,5 +1,5 @@
 import { Container, Image, Network, Volume } from '@pulumi/docker';
-import { interpolate, ComponentResource, Output, ResourceError } from '@pulumi/pulumi';
+import { interpolate, ComponentResource, Output, ResourceError, ComponentResourceOptions } from '@pulumi/pulumi';
 import { join } from 'path';
 
 interface CaddyInputs {
@@ -15,6 +15,10 @@ interface CaddyInputs {
 }
 
 export class CaddyDockerService extends ComponentResource {
+  constructor(type: string, name: string, args?: CaddyInputs, opts?: ComponentResourceOptions, remote?: boolean) {
+    super(type, name, args, opts, remote);
+  }
+
   protected async initialize(args: CaddyInputs): Promise<any> {
     if (!args.network)
       throw new ResourceError('args.network must be provided', this);
