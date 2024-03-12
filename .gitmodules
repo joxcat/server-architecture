@@ -1,0 +1,3 @@
+[submodule "src/docker-services/rss_bridge/source"]
+	path = src/docker-services/rss_bridge/source
+	url = https://github.com/joxcat/rss-bridge
