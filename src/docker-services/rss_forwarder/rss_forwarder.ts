@@ -23,13 +23,12 @@ interface RssForwarderInputs {
 
 export class RssForwarderDockerService extends ComponentResource {
   constructor(
-    type: string,
     name: string,
     args?: RssForwarderInputs,
     opts?: ComponentResourceOptions,
     remote?: boolean,
   ) {
-    super(type, name, args, opts, remote);
+    super('docker_service', name, args, opts, remote);
   }
 
   protected async initialize(args: RssForwarderInputs): Promise<any> {

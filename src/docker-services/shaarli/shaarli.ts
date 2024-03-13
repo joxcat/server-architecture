@@ -24,13 +24,12 @@ interface ShaarliInputs {
 
 export class ShaarliDockerService extends ComponentResource {
   constructor(
-    type: string,
     name: string,
     args?: ShaarliInputs,
     opts?: ComponentResourceOptions,
     remote?: boolean,
   ) {
-    super(type, name, args, opts, remote);
+    super('docker_service', name, args, opts, remote);
   }
 
   protected async initialize(args: ShaarliInputs): Promise<any> {

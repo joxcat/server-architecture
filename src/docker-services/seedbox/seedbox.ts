@@ -29,13 +29,12 @@ interface SeedboxInputs {
 
 export class SeedboxDockerService extends ComponentResource {
   constructor(
-    type: string,
     name: string,
     args?: SeedboxInputs,
     opts?: ComponentResourceOptions,
     remote?: boolean,
   ) {
-    super(type, name, args, opts, remote);
+    super('docker_service', name, args, opts, remote);
   }
 
   protected async initialize(args: SeedboxInputs): Promise<any> {
@@ -49,7 +48,9 @@ export class SeedboxDockerService extends ComponentResource {
       if (!args.platform)
         throw new ResourceError('args.platform must be provided', this);
 
-    const internalNetwork = new Network('internal-seedbox');
+    const internalNetwork = new Network('internal-seedbox', {}, {
+      parent: this,
+    });
 
     const jellyfinImage = new RegistryImage(
       'jellyfin',

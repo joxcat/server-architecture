@@ -13,7 +13,7 @@ const dockerProxyNetwork = new docker.Network('proxy');
 
 // SOURCE: https://rclone.org/docker/ for docker_driver_opts
 
-new CaddyDockerService('docker_container', 'caddy', {
+new CaddyDockerService('caddy', {
   network: dockerProxyNetwork,
   docker_driver_opts: {
     host: config.requireSecret('sftp.host'),
@@ -25,24 +25,12 @@ new CaddyDockerService('docker_container', 'caddy', {
   platform: config.require('docker.platform'),
 });
 
-new RssBridgeDockerService('docker_container', 'rss-bridge', {
+new RssBridgeDockerService('rss-bridge', {
   network: dockerProxyNetwork,
   platform: config.require('docker.platform'),
 });
 
-new RssForwarderDockerService('docker_container', 'rss-forwarder', {
-  network: dockerProxyNetwork,
-  docker_driver_opts: {
-    host: config.requireSecret('sftp.host'),
-    port: config.requireSecret('sftp.port'),
-    user: config.requireSecret('sftp.user'),
-    password: config.requireSecret('sftp.password'),
-  },
-  sftp_base_path: config.get('sftp.base_path') ?? '/',
-  platform: config.require('docker.platform'),
-});
-
-new ShaarliDockerService('docker_container', 'shaarli', {
+new RssForwarderDockerService('rss-forwarder', {
   network: dockerProxyNetwork,
   docker_driver_opts: {
     host: config.requireSecret('sftp.host'),
@@ -54,7 +42,19 @@ new ShaarliDockerService('docker_container', 'shaarli', {
   platform: config.require('docker.platform'),
 });
 
-new SeedboxDockerService('docker_container', 'seedbox', {
+new ShaarliDockerService('shaarli', {
+  network: dockerProxyNetwork,
+  docker_driver_opts: {
+    host: config.requireSecret('sftp.host'),
+    port: config.requireSecret('sftp.port'),
+    user: config.requireSecret('sftp.user'),
+    password: config.requireSecret('sftp.password'),
+  },
+  sftp_base_path: config.get('sftp.base_path') ?? '/',
+  platform: config.require('docker.platform'),
+});
+
+new SeedboxDockerService('seedbox', {
   network: dockerProxyNetwork,
   docker_driver_opts: {
     host: config.requireSecret('sftp.host'),

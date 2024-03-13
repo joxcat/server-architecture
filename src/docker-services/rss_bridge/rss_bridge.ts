@@ -14,13 +14,12 @@ interface RssBridgeInputs {
 
 export class RssBridgeDockerService extends ComponentResource {
   constructor(
-    type: string,
     name: string,
     args?: RssBridgeInputs,
     opts?: ComponentResourceOptions,
     remote?: boolean,
   ) {
-    super(type, name, args, opts, remote);
+    super('docker_service', name, args, opts, remote);
   }
 
   protected async initialize(args: RssBridgeInputs): Promise<any> {
