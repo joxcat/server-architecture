@@ -1,5 +1,11 @@
 import { Container, Image, Network, Volume } from '@pulumi/docker';
-import { interpolate, ComponentResource, Output, ResourceError, ComponentResourceOptions } from '@pulumi/pulumi';
+import {
+  interpolate,
+  ComponentResource,
+  Output,
+  ResourceError,
+  ComponentResourceOptions,
+} from '@pulumi/pulumi';
 import { join } from 'path';
 
 interface CaddyInputs {
@@ -15,7 +21,13 @@ interface CaddyInputs {
 }
 
 export class CaddyDockerService extends ComponentResource {
-  constructor(type: string, name: string, args?: CaddyInputs, opts?: ComponentResourceOptions, remote?: boolean) {
+  constructor(
+    type: string,
+    name: string,
+    args?: CaddyInputs,
+    opts?: ComponentResourceOptions,
+    remote?: boolean,
+  ) {
     super(type, name, args, opts, remote);
   }
 
@@ -29,16 +41,20 @@ export class CaddyDockerService extends ComponentResource {
     if (!args.platform)
       throw new ResourceError('args.platform must be provided', this);
 
-    const caddyImage = new Image('caddy', {
-      imageName: 'caddy',
-      build: {
-        context: join(__dirname, 'docker'),
-        platform: args.platform,
+    const caddyImage = new Image(
+      'caddy',
+      {
+        imageName: 'caddy',
+        build: {
+          context: join(__dirname, 'docker'),
+          platform: args.platform,
+        },
+        skipPush: true,
       },
-      skipPush: true,
-    }, {
-      parent: this,
-    });
+      {
+        parent: this,
+      },
+    );
 
     const dockerDriverOpts = {
       type: 'sftp',
@@ -49,75 +65,90 @@ export class CaddyDockerService extends ComponentResource {
       'allow-other': 'true',
     };
 
-    const caddyDataVolume = new Volume('caddy-data', {
-      driver: 'rclone:latest',
-      driverOpts: {
-        ...dockerDriverOpts,
-        path: join(args.sftp_base_path, 'caddy/data'),
-      },
-    }, {
-      parent: this,
-    });
-    const caddyStateVolume = new Volume('caddy-state', {
-      driver: 'rclone:latest',
-      driverOpts: {
-        ...dockerDriverOpts,
-        path: join(args.sftp_base_path, 'caddy/state'),
-      },
-    }, {
-      parent: this,
-    });
-    const caddyConfigVolume = new Volume('caddy-config', {
-      driver: 'rclone:latest',
-      driverOpts: {
-        ...dockerDriverOpts,
-        path: join(args.sftp_base_path, 'caddy/config'),
-      },
-    }, {
-      parent: this,
-    });
-
-    const caddyContainer = new Container('caddy', {
-      image: caddyImage.repoDigest,
-      restart: 'unless-stopped',
-      entrypoints: [
-        'caddy',
-        'run',
-        '--config',
-        '/etc/caddy/Caddyfile',
-        '--adapter',
-        'caddyfile',
-      ],
-      hosts: [
-        {
-          host: 'host.docker.internal',
-          ip: 'host-gateway',
+    const caddyDataVolume = new Volume(
+      'caddy-data',
+      {
+        driver: 'rclone:latest',
+        driverOpts: {
+          ...dockerDriverOpts,
+          path: join(args.sftp_base_path, 'caddy/data'),
         },
-      ],
-      networksAdvanced: [{ name: args.network.id }],
-      ports: [
-        { internal: 80, external: 80 },
-        { internal: 443, external: 443 },
-      ],
-      volumes: [
-        { volumeName: caddyDataVolume.name, containerPath: '/data' },
-        { volumeName: caddyStateVolume.name, containerPath: '/config' },
-        { volumeName: caddyConfigVolume.name, containerPath: '/etc/caddy' },
-      ]
-    }, {
-      parent: this,
-      dependsOn: [
-        caddyImage,
-        args.network,
-      ],
-    });
+      },
+      {
+        parent: this,
+      },
+    );
+    const caddyStateVolume = new Volume(
+      'caddy-state',
+      {
+        driver: 'rclone:latest',
+        driverOpts: {
+          ...dockerDriverOpts,
+          path: join(args.sftp_base_path, 'caddy/state'),
+        },
+      },
+      {
+        parent: this,
+      },
+    );
+    const caddyConfigVolume = new Volume(
+      'caddy-config',
+      {
+        driver: 'rclone:latest',
+        driverOpts: {
+          ...dockerDriverOpts,
+          path: join(args.sftp_base_path, 'caddy/config'),
+        },
+      },
+      {
+        parent: this,
+      },
+    );
+
+    const caddyContainer = new Container(
+      'caddy',
+      {
+        image: caddyImage.repoDigest,
+        restart: 'unless-stopped',
+        entrypoints: [
+          'caddy',
+          'run',
+          '--config',
+          '/etc/caddy/Caddyfile',
+          '--adapter',
+          'caddyfile',
+        ],
+        hosts: [
+          {
+            host: 'host.docker.internal',
+            ip: 'host-gateway',
+          },
+        ],
+        networksAdvanced: [{ name: args.network.id }],
+        ports: [
+          { internal: 80, external: 80 },
+          { internal: 443, external: 443 },
+        ],
+        volumes: [
+          { volumeName: caddyDataVolume.name, containerPath: '/data' },
+          { volumeName: caddyStateVolume.name, containerPath: '/config' },
+          { volumeName: caddyConfigVolume.name, containerPath: '/etc/caddy' },
+        ],
+      },
+      {
+        parent: this,
+        dependsOn: [
+          args.network,
+          caddyImage,
+          caddyDataVolume,
+          caddyStateVolume,
+          caddyConfigVolume,
+        ],
+      },
+    );
 
     return Promise.resolve({
-      caddyImage,
       caddyContainer,
-      caddyDataVolume,
-      caddyStateVolume,
-      caddyConfigVolume,
     });
   }
 }

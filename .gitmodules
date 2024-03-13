@@ -1,3 +1,6 @@
 [submodule "src/docker-services/rss_bridge/source"]
 	path = src/docker-services/rss_bridge/source
 	url = https://github.com/joxcat/rss-bridge
+[submodule "src/docker-services/shaarli/themes/stack"]
+	path = src/docker-services/shaarli/themes/stack
+	url = https://github.com/joxcat/shaarli-stack
