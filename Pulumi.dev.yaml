@@ -1,4 +1,12 @@
 config:
+  server-architecture:coder.access_url:
+    secure: AAABALdWGpcgDvpV+uEkGJ/EcKAoTBhl2QV6OVhXYL9i89Tm+zCCHVcGibaXQhh4DvYp5J3bWQ==
+  server-architecture:coder.docker_group_id:
+    secure: AAABAAUuaMJIy/627waBqi3I/HDf1HyDjb8J4tAyWjwscFo=
+  server-architecture:coder.postgres_password:
+    secure: AAABAERJ6CyHetAlctnO7zhRX/IgteeunPnd5KfXUaogOkbrOA==
+  server-architecture:coder.wildcard_url:
+    secure: AAABAL/I8fIX6VrnynP89NqoWHIDMlf/kD1PzEwNudtOQ7gFXUCjVkJYRE7NRT7vGA==
   server-architecture:docker.platform: linux/amd64
   server-architecture:sftp.base_path: /home
   server-architecture:sftp.host:

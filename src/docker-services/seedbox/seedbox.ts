@@ -267,9 +267,7 @@ export class SeedboxDockerService extends ComponentResource {
         volumes: [
           { volumeName: seedboxDataVolume.name, containerPath: '/data' },
           {
-            hostPath: seedboxConfigVolume.mountpoint.apply(
-              (m) => `${m}/.local/share/rtorrent`,
-            ),
+            hostPath: interpolate`${seedboxConfigVolume.mountpoint}/.local/share/rtorrent`,
             containerPath: '/config/.local/share/rtorrent',
           },
           { volumeName: radarrConfigVolume.name, containerPath: '/config' },
@@ -297,9 +295,7 @@ export class SeedboxDockerService extends ComponentResource {
         volumes: [
           { volumeName: seedboxDataVolume.name, containerPath: '/data' },
           {
-            hostPath: seedboxConfigVolume.mountpoint.apply(
-              (m) => `${m}/.local/share/rtorrent`,
-            ),
+            hostPath: interpolate`${seedboxConfigVolume.mountpoint}/.local/share/rtorrent`,
             containerPath: '/config/.local/share/rtorrent',
           },
           { volumeName: sonarrConfigVolume.name, containerPath: '/config' },

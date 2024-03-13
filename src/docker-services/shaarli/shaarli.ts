@@ -106,9 +106,7 @@ export class ShaarliDockerService extends ComponentResource {
     );
 
     return Promise.resolve({
-      shaarliImage,
       shaarliContainer,
-      shaarliDataVolume,
     });
   }
 }
