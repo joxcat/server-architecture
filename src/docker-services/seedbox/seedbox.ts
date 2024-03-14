@@ -48,9 +48,13 @@ export class SeedboxDockerService extends ComponentResource {
       if (!args.platform)
         throw new ResourceError('args.platform must be provided', this);
 
-    const internalNetwork = new Network('internal-seedbox', {}, {
-      parent: this,
-    });
+    const internalNetwork = new Network(
+      'internal-seedbox',
+      {},
+      {
+        parent: this,
+      },
+    );
 
     const jellyfinImage = new RegistryImage(
       'jellyfin',

@@ -7,6 +7,12 @@ config:
     secure: AAABAERJ6CyHetAlctnO7zhRX/IgteeunPnd5KfXUaogOkbrOA==
   server-architecture:coder.wildcard_url:
     secure: AAABAL/I8fIX6VrnynP89NqoWHIDMlf/kD1PzEwNudtOQ7gFXUCjVkJYRE7NRT7vGA==
+  server-architecture:concourse.add_local_user:
+    secure: AAABAKvF1bJr4zvY4+qcTZikXMbQkHNqgkWcyOvZXECZPcKChan4ZtwZbbPQAkbSYmexK59wQSgjNg==
+  server-architecture:concourse.main_team_local_user:
+    secure: AAABAJtGhtZWmlFyiLmGvCK3NHCT+UubJyD6MMK0cFkKu1qmkQ==
+  server-architecture:concourse.postgres_password:
+    secure: AAABAA3Ckinp/gBKaY3wKcrUhr+W2vZt+YT/B4dqM9HHTW8SOTTDMWI8XZVwkgJvJ+zF
   server-architecture:docker.platform: linux/amd64
   server-architecture:sftp.base_path: /home
   server-architecture:sftp.host:

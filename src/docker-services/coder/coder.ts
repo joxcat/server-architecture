@@ -20,11 +20,11 @@ interface CoderInputs {
   sftp_base_path: string;
   hostname?: string;
   coderConfig: {
-    dockerGroupId: Output<string>,
-    postgresPassword: Output<string>,
-    accessUrl: Output<string>,
-    wildcardUrl: Output<string>,
-  }
+    dockerGroupId: Output<string>;
+    postgresPassword: Output<string>;
+    accessUrl: Output<string>;
+    wildcardUrl: Output<string>;
+  };
 }
 
 export class CoderDockerService extends ComponentResource {
@@ -67,9 +67,13 @@ export class CoderDockerService extends ComponentResource {
       },
     );
 
-    const internalNetwork = new Network('internal-coder', {}, {
-      parent: this,
-    });
+    const internalNetwork = new Network(
+      'internal-coder',
+      {},
+      {
+        parent: this,
+      },
+    );
 
     const dockerDriverOpts = {
       type: 'sftp',
@@ -113,9 +117,12 @@ export class CoderDockerService extends ComponentResource {
           'POSTGRES_DB=coder',
         ],
         healthcheck: {
-          tests: ["CMD-SHELL", interpolate`pg_isready -U coder -d ${args.coderConfig.postgresPassword}`],
-          interval: "5s",
-          timeout: "5s",
+          tests: [
+            'CMD-SHELL',
+            interpolate`pg_isready -U coder -d ${args.coderConfig.postgresPassword}`,
+          ],
+          interval: '5s',
+          timeout: '5s',
           retries: 5,
         },
       },
@@ -123,7 +130,7 @@ export class CoderDockerService extends ComponentResource {
         parent: this,
         dependsOn: [args.network, postgresImage, coderDataVolume],
       },
-    )
+    );
     const coderContainer = new Container(
       'coder',
       {
@@ -137,14 +144,14 @@ export class CoderDockerService extends ComponentResource {
           interpolate`CODER_WILDCARD_ACCESS_URL=${args.coderConfig.wildcardUrl}`,
         ],
         networksAdvanced: [
-          { name: args.network.id }, 
+          { name: args.network.id },
           { name: internalNetwork.id },
-          { name: "bridge" },
+          { name: 'bridge' },
         ],
         volumes: [
           {
-            hostPath: "/var/run/docker.sock",
-            containerPath: "/var/run/docker.sock",
+            hostPath: '/var/run/docker.sock',
+            containerPath: '/var/run/docker.sock',
           },
         ],
         groupAdds: [args.coderConfig.dockerGroupId],

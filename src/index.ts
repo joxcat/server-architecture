@@ -7,21 +7,23 @@ import { RssForwarderDockerService } from './docker-services/rss_forwarder/rss_f
 import { ShaarliDockerService } from './docker-services/shaarli/shaarli';
 import { SeedboxDockerService } from './docker-services/seedbox/seedbox';
 import { CoderDockerService } from './docker-services/coder/coder';
+import { ConcourseDockerService } from './docker-services/concourse';
 
 const config = new Config();
 
 const dockerProxyNetwork = new docker.Network('proxy');
 
 // SOURCE: https://rclone.org/docker/ for docker_driver_opts
+const docker_driver_opts = {
+  host: config.requireSecret('sftp.host'),
+  port: config.requireSecret('sftp.port'),
+  user: config.requireSecret('sftp.user'),
+  password: config.requireSecret('sftp.password'),
+};
 
 new CaddyDockerService('caddy', {
   network: dockerProxyNetwork,
-  docker_driver_opts: {
-    host: config.requireSecret('sftp.host'),
-    port: config.requireSecret('sftp.port'),
-    user: config.requireSecret('sftp.user'),
-    password: config.requireSecret('sftp.password'),
-  },
+  docker_driver_opts,
   sftp_base_path: config.get('sftp.base_path') ?? '/',
   platform: config.require('docker.platform'),
 });
@@ -33,48 +35,28 @@ new RssBridgeDockerService('rss-bridge', {
 
 new RssForwarderDockerService('rss-forwarder', {
   network: dockerProxyNetwork,
-  docker_driver_opts: {
-    host: config.requireSecret('sftp.host'),
-    port: config.requireSecret('sftp.port'),
-    user: config.requireSecret('sftp.user'),
-    password: config.requireSecret('sftp.password'),
-  },
+  docker_driver_opts,
   sftp_base_path: config.get('sftp.base_path') ?? '/',
   platform: config.require('docker.platform'),
 });
 
 new ShaarliDockerService('shaarli', {
   network: dockerProxyNetwork,
-  docker_driver_opts: {
-    host: config.requireSecret('sftp.host'),
-    port: config.requireSecret('sftp.port'),
-    user: config.requireSecret('sftp.user'),
-    password: config.requireSecret('sftp.password'),
-  },
+  docker_driver_opts,
   sftp_base_path: config.get('sftp.base_path') ?? '/',
   platform: config.require('docker.platform'),
 });
 
 new SeedboxDockerService('seedbox', {
   network: dockerProxyNetwork,
-  docker_driver_opts: {
-    host: config.requireSecret('sftp.host'),
-    port: config.requireSecret('sftp.port'),
-    user: config.requireSecret('sftp.user'),
-    password: config.requireSecret('sftp.password'),
-  },
+  docker_driver_opts,
   sftp_base_path: config.get('sftp.base_path') ?? '/',
   platform: config.require('docker.platform'),
 });
 
 new CoderDockerService('coder', {
   network: dockerProxyNetwork,
-  docker_driver_opts: {
-    host: config.requireSecret('sftp.host'),
-    port: config.requireSecret('sftp.port'),
-    user: config.requireSecret('sftp.user'),
-    password: config.requireSecret('sftp.password'),
-  },
+  docker_driver_opts,
   sftp_base_path: config.get('sftp.base_path') ?? '/',
   platform: config.require('docker.platform'),
   coderConfig: {
@@ -82,5 +64,17 @@ new CoderDockerService('coder', {
     wildcardUrl: config.requireSecret('coder.wildcard_url'),
     dockerGroupId: config.requireSecret('coder.docker_group_id'),
     postgresPassword: config.requireSecret('coder.postgres_password'),
-  }
-})
+  },
+});
+
+new ConcourseDockerService('concourse', {
+  network: dockerProxyNetwork,
+  docker_driver_opts,
+  sftp_base_path: config.get('sftp.base_path') ?? '/',
+  platform: config.require('docker.platform'),
+  concourseConfig: {
+    postgresPassword: config.requireSecret('concourse.postgres_password'),
+    concourseAddLocalUser: config.requireSecret('concourse.add_local_user'),
+    mainTeamLocalUser: config.requireSecret('concourse.main_team_local_user'),
+  },
+});
