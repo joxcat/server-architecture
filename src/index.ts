@@ -12,6 +12,7 @@ import { FilestashDockerService } from './docker-services/filestash/filestash';
 import { ForgejoDockerService } from './docker-services/forgejo';
 import { IpfsDockerService } from './docker-services/ipfs';
 import { KellnrDockerService } from './docker-services/kellner';
+import { OllamaDockerService } from './docker-services/ollama';
 
 const config = new Config();
 
@@ -106,6 +107,13 @@ new IpfsDockerService('ipfs', {
 });
 
 new KellnrDockerService('kellnr', {
+  network: dockerProxyNetwork,
+  docker_driver_opts,
+  sftp_base_path: config.get('sftp.base_path') ?? '/',
+  platform: config.require('docker.platform'),
+});
+
+new OllamaDockerService('ollama', {
   network: dockerProxyNetwork,
   docker_driver_opts,
   sftp_base_path: config.get('sftp.base_path') ?? '/',
