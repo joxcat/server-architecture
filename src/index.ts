@@ -18,6 +18,7 @@ import { RssMinifluxDockerService } from './docker-services/rss_miniflux';
 import { UmamiDockerService } from './docker-services/umami';
 import { HomepageDockerService } from './docker-services/homepage';
 import { GrafanaDockerService } from './docker-services/grafana';
+import { SyncthingDockerService } from './docker-services/syncthing';
 
 const config = new Config();
 
@@ -95,3 +96,4 @@ new GrafanaDockerService('grafana', {
   ...sftpBaseParams,
   grafanaPlugins: '',
 });
+new SyncthingDockerService('syncthing', sftpBaseParams);
