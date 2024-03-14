@@ -16,6 +16,16 @@ config:
   server-architecture:docker.platform: linux/amd64
   server-architecture:filestash.config_secret:
     secure: AAABAIkgODM9rhZiRTZpMg7+XIndjJtNvpTKQnfjWZxDt/kTvKmy1fcqUWE1pIYi0WVK
+  server-architecture:miniflux.postgres_password:
+    secure: AAABADMRxr3g5flXIqDjWA7VTGbesGCUw7dsRmT7amRKOUYpYEY=
+  server-architecture:polr.app_address: reta.re
+  server-architecture:polr.app_name: RetaRE
+  server-architecture:polr.default_admin_password:
+    secure: AAABAKCu5BtXLf6xYdmOH9Zb1o+VMScjTJHnaC5MCucnuTk5Y4Bfe7BoQf+WAC3h
+  server-architecture:polr.default_admin_username:
+    secure: AAABAH2sJFAMK90mtS9HgZxrl4Ed6KsCU9eQTbpuUKu6NB215Q==
+  server-architecture:polr.mysql_password:
+    secure: AAABABF5wM4c//5PYrcNZwk3IwI8RgggWgvEjHd29ZqmMN7g
   server-architecture:sftp.base_path: /home
   server-architecture:sftp.host:
     secure: AAABAPOpeQEKuIeYdXsxZnRCAUEWq2mhOBQhDnza9BAycWFAc7aJvfNch2xsN/Oa+OADgt8Ce3PTxQ==
@@ -25,3 +35,7 @@ config:
     secure: AAABAM+XbENkiaRxLvJddVaWhaIE0p/xoIIgS0143YCHaQ==
   server-architecture:sftp.user:
     secure: AAABALsCesA/THqA7hjR+yZog0M8+AGMXRipavOOZuoqwQ4Y8RQJ9E0n4DI=
+  server-architecture:umami.app_secret:
+    secure: AAABADF6PpBOtXyIktBE5qUJqDgaAtw1OY5bpFLdxXVfDy1TM7IcyNIkIC+L0sYiA4ONAqeXtxu6nYuvtc3AoPqzHo7TFD6NbjRzF6Pa+PC5DuX736hkTNI=
+  server-architecture:umami.postgres_password:
+    secure: AAABAMnt4uaNu0Ew719R3D8YPonj9WfRCC0qNBU05DNYHajImvUjshRePIbL24VBE8Uw

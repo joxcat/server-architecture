@@ -13,6 +13,9 @@ import { ForgejoDockerService } from './docker-services/forgejo';
 import { IpfsDockerService } from './docker-services/ipfs';
 import { KellnrDockerService } from './docker-services/kellner';
 import { OllamaDockerService } from './docker-services/ollama';
+import { PolrDockerService } from './docker-services/polr';
+import { RssMinifluxDockerService } from './docker-services/rss_miniflux';
+import { UmamiDockerService } from './docker-services/umami';
 
 const config = new Config();
 
@@ -118,4 +121,38 @@ new OllamaDockerService('ollama', {
   docker_driver_opts,
   sftp_base_path: config.get('sftp.base_path') ?? '/',
   platform: config.require('docker.platform'),
+});
+
+new PolrDockerService('polr', {
+  network: dockerProxyNetwork,
+  docker_driver_opts,
+  sftp_base_path: config.get('sftp.base_path') ?? '/',
+  platform: config.require('docker.platform'),
+  polrConfig: {
+    mysqlPassword: config.requireSecret('polr.mysql_password'),
+    appName: config.require('polr.app_name'),
+    appAddress: config.require('polr.app_address'),
+    defaultAdminUsername: config.requireSecret('polr.default_admin_username'),
+    defaultAdminPassword: config.requireSecret('polr.default_admin_password'),
+  },
+});
+
+new RssMinifluxDockerService('miniflux', {
+  network: dockerProxyNetwork,
+  docker_driver_opts,
+  sftp_base_path: config.get('sftp.base_path') ?? '/',
+  platform: config.require('docker.platform'),
+  hostname: config.get('miniflux.hostname'),
+  postgresPassword: config.requireSecret('miniflux.postgres_password'),
+});
+
+new UmamiDockerService('umami', {
+  network: dockerProxyNetwork,
+  docker_driver_opts,
+  sftp_base_path: config.get('sftp.base_path') ?? '/',
+  platform: config.require('docker.platform'),
+  umamiConfig: {
+    postgresPassword: config.requireSecret('umami.postgres_password'),
+    appSecret: config.requireSecret('umami.app_secret'),
+  },
 });
