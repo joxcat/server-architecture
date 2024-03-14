@@ -8,6 +8,7 @@ import { ShaarliDockerService } from './docker-services/shaarli/shaarli';
 import { SeedboxDockerService } from './docker-services/seedbox/seedbox';
 import { CoderDockerService } from './docker-services/coder/coder';
 import { ConcourseDockerService } from './docker-services/concourse';
+import { FilestashDockerService } from './docker-services/filestash/filestash';
 
 const config = new Config();
 
@@ -78,3 +79,11 @@ new ConcourseDockerService('concourse', {
     mainTeamLocalUser: config.requireSecret('concourse.main_team_local_user'),
   },
 });
+
+new FilestashDockerService('filestash', {
+  network: dockerProxyNetwork,
+  docker_driver_opts,
+  sftp_base_path: config.get('sftp.base_path') ?? '/',
+  platform: config.require('docker.platform'),
+  filestashConfigSecret: config.requireSecret('filestash.config_secret'),
+})

@@ -14,6 +14,8 @@ config:
   server-architecture:concourse.postgres_password:
     secure: AAABAA3Ckinp/gBKaY3wKcrUhr+W2vZt+YT/B4dqM9HHTW8SOTTDMWI8XZVwkgJvJ+zF
   server-architecture:docker.platform: linux/amd64
+  server-architecture:filestash.config_secret:
+    secure: AAABAIkgODM9rhZiRTZpMg7+XIndjJtNvpTKQnfjWZxDt/kTvKmy1fcqUWE1pIYi0WVK
   server-architecture:sftp.base_path: /home
   server-architecture:sftp.host:
     secure: AAABAPOpeQEKuIeYdXsxZnRCAUEWq2mhOBQhDnza9BAycWFAc7aJvfNch2xsN/Oa+OADgt8Ce3PTxQ==
