@@ -19,6 +19,7 @@ import { UmamiDockerService } from './docker-services/umami';
 import { HomepageDockerService } from './docker-services/homepage';
 import { GrafanaDockerService } from './docker-services/grafana';
 import { SyncthingDockerService } from './docker-services/syncthing';
+import { TailscaleDockerService } from './docker-services/tailscale';
 
 const config = new Config();
 
@@ -97,3 +98,7 @@ new GrafanaDockerService('grafana', {
   grafanaPlugins: '',
 });
 new SyncthingDockerService('syncthing', sftpBaseParams);
+new TailscaleDockerService('tailscale', {
+  ...sftpBaseParams,
+  tailscaleAuthKey: config.requireSecret('tailscale.auth_key'),
+});

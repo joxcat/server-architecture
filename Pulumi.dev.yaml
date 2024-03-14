@@ -35,6 +35,8 @@ config:
     secure: AAABAM+XbENkiaRxLvJddVaWhaIE0p/xoIIgS0143YCHaQ==
   server-architecture:sftp.user:
     secure: AAABALsCesA/THqA7hjR+yZog0M8+AGMXRipavOOZuoqwQ4Y8RQJ9E0n4DI=
+  server-architecture:tailscale.auth_key:
+    secure: AAABAFaHcON5lx2bxlYyQ16jVjFHcj0Q44hVyDIfeR8ORe1z8MjwjYZhHTOA9J/9rsEHClcFL+c9NPqCS2M8EhkBYj/nMLnlYpmuWaLcK7tQnY4GnUOdJ8qLOqAz
   server-architecture:umami.app_secret:
     secure: AAABADF6PpBOtXyIktBE5qUJqDgaAtw1OY5bpFLdxXVfDy1TM7IcyNIkIC+L0sYiA4ONAqeXtxu6nYuvtc3AoPqzHo7TFD6NbjRzF6Pa+PC5DuX736hkTNI=
   server-architecture:umami.postgres_password:
