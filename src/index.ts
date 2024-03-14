@@ -11,6 +11,7 @@ import { ConcourseDockerService } from './docker-services/concourse';
 import { FilestashDockerService } from './docker-services/filestash/filestash';
 import { ForgejoDockerService } from './docker-services/forgejo';
 import { IpfsDockerService } from './docker-services/ipfs';
+import { KellnrDockerService } from './docker-services/kellner';
 
 const config = new Config();
 
@@ -98,6 +99,13 @@ new ForgejoDockerService('forgejo', {
 });
 
 new IpfsDockerService('ipfs', {
+  network: dockerProxyNetwork,
+  docker_driver_opts,
+  sftp_base_path: config.get('sftp.base_path') ?? '/',
+  platform: config.require('docker.platform'),
+});
+
+new KellnrDockerService('kellnr', {
   network: dockerProxyNetwork,
   docker_driver_opts,
   sftp_base_path: config.get('sftp.base_path') ?? '/',
