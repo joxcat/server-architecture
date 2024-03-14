@@ -17,6 +17,7 @@ import { PolrDockerService } from './docker-services/polr';
 import { RssMinifluxDockerService } from './docker-services/rss_miniflux';
 import { UmamiDockerService } from './docker-services/umami';
 import { HomepageDockerService } from './docker-services/homepage';
+import { GrafanaDockerService } from './docker-services/grafana';
 
 const config = new Config();
 
@@ -90,3 +91,7 @@ new UmamiDockerService('umami', {
   },
 });
 new HomepageDockerService('homepage', sftpBaseParams);
+new GrafanaDockerService('grafana', {
+  ...sftpBaseParams,
+  grafanaPlugins: '',
+});
