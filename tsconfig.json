@@ -16,6 +16,7 @@
         "src/index.ts"
     ],
     "include": [
-        "src/docker-services/**/*"
-, "src/index.ts"    ]
+        "src/docker-services/**/*",
+        "src/index.ts"
+    ]
 }

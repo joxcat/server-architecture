@@ -138,7 +138,7 @@ export class CoderDockerService extends ComponentResource {
         restart: 'unless-stopped',
         hostname: args.hostname ?? 'coder',
         envs: [
-          interpolate`CODER_PG_CONNECTION_URL=postgresql://coder:${args.coderConfig.postgresPassword}@database/coder?sslmode=disable`,
+          interpolate`CODER_PG_CONNECTION_URL=postgresql://coder:${args.coderConfig.postgresPassword}@${coderPostgresContainer.hostname}/coder?sslmode=disable`,
           'CODER_HTTP_ADDRESS=0.0.0.0:7080',
           interpolate`CODER_ACCESS_URL=${args.coderConfig.accessUrl}`,
           interpolate`CODER_WILDCARD_ACCESS_URL=${args.coderConfig.wildcardUrl}`,

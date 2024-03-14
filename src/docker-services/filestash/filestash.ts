@@ -19,7 +19,7 @@ interface FilestashInputs {
   };
   sftp_base_path: string;
   hostname?: string;
-  filestashConfigSecret: Output<String>;
+  filestashConfigSecret: Output<string>;
 }
 
 export class FilestashDockerService extends ComponentResource {
@@ -111,8 +111,8 @@ export class FilestashDockerService extends ComponentResource {
         restart: 'unless-stopped',
         hostname: args.hostname ?? 'filestash',
         envs: [
-          "APPLICATION_URL=",
-          "ONLYOFFICE_URL=http://onlyoffice",
+          'APPLICATION_URL=',
+          interpolate`ONLYOFFICE_URL=http://${filestashOnlyofficeContainer.hostname}`,
           interpolate`CONFIG_SECRET=${args.filestashConfigSecret}`,
         ],
         networksAdvanced: [

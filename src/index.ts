@@ -9,6 +9,7 @@ import { SeedboxDockerService } from './docker-services/seedbox/seedbox';
 import { CoderDockerService } from './docker-services/coder/coder';
 import { ConcourseDockerService } from './docker-services/concourse';
 import { FilestashDockerService } from './docker-services/filestash/filestash';
+import { ForgejoDockerService } from './docker-services/forgejo';
 
 const config = new Config();
 
@@ -86,4 +87,11 @@ new FilestashDockerService('filestash', {
   sftp_base_path: config.get('sftp.base_path') ?? '/',
   platform: config.require('docker.platform'),
   filestashConfigSecret: config.requireSecret('filestash.config_secret'),
-})
+});
+
+new ForgejoDockerService('forgejo', {
+  network: dockerProxyNetwork,
+  docker_driver_opts,
+  sftp_base_path: config.get('sftp.base_path') ?? '/',
+  platform: config.require('docker.platform'),
+});

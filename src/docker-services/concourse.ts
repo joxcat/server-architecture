@@ -133,37 +133,6 @@ export class ConcourseDockerService extends ComponentResource {
         dependsOn: [internalNetwork, postgresImage, concourseDataVolume],
       },
     );
-    const concourseWorkerContainer = new Container(
-      'concourse-worker',
-      {
-        image: concourseImage.sha256Digest,
-        restart: 'unless-stopped',
-        hostname: 'concourse-worker',
-        command: ['worker'],
-        privileged: true,
-        envs: [
-          'CONCOURSE_RUNTIME=containerd',
-          'CONCOURSE_TSA_PUBLIC_KEY=/concourse-keys/tsa_host_key.pub',
-          'CONCOURSE_TSA_WORKER_PRIVATE_KEY=/concourse-keys/worker_key',
-          'CONCOURSE_TSA_HOST=concourse:2222',
-          'CONCOURSE_BIND_IP=0.0.0.0',
-          'CONCOURSE_BAGGAGECLAIM_BIND_IP=0.0.0.0',
-          'CONCOURSE_BAGGAGECLAIM_DRIVER=overlay',
-          'CONCOURSE_CONTAINERD_DNS_PROXY_ENABLE=true',
-        ],
-        networksAdvanced: [{ name: internalNetwork.id }],
-        volumes: [
-          {
-            volumeName: concourseKeysVolume.name,
-            containerPath: '/concourse-keys',
-          },
-        ],
-      },
-      {
-        parent: this,
-        dependsOn: [internalNetwork, concourseImage, concourseKeysVolume],
-      },
-    );
     const concourseContainer = new Container(
       'concourse',
       {
@@ -175,7 +144,7 @@ export class ConcourseDockerService extends ComponentResource {
           'CONCOURSE_SESSION_SIGNING_KEY=/concourse-keys/session_signing_key',
           'CONCOURSE_TSA_AUTHORIZED_KEYS=/concourse-keys/authorized_worker_keys',
           'CONCOURSE_TSA_HOST_KEY=/concourse-keys/tsa_host_key',
-          'CONCOURSE_POSTGRES_HOST=concourse-db',
+          interpolate`CONCOURSE_POSTGRES_HOST=${concoursePostgresContainer.hostname}`,
           'CONCOURSE_POSTGRES_USER=concourse_user',
           interpolate`CONCOURSE_POSTGRES_PASSWORD=${args.concourseConfig.postgresPassword}`,
           'CONCOURSE_POSTGRES_DATABASE=concourse',
@@ -203,6 +172,37 @@ export class ConcourseDockerService extends ComponentResource {
           concourseImage,
           concourseKeysVolume,
         ],
+      },
+    );
+    const concourseWorkerContainer = new Container(
+      'concourse-worker',
+      {
+        image: concourseImage.sha256Digest,
+        restart: 'unless-stopped',
+        hostname: 'concourse-worker',
+        command: ['worker'],
+        privileged: true,
+        envs: [
+          'CONCOURSE_RUNTIME=containerd',
+          'CONCOURSE_TSA_PUBLIC_KEY=/concourse-keys/tsa_host_key.pub',
+          'CONCOURSE_TSA_WORKER_PRIVATE_KEY=/concourse-keys/worker_key',
+          interpolate`CONCOURSE_TSA_HOST=${concourseContainer.hostname}:2222`,
+          'CONCOURSE_BIND_IP=0.0.0.0',
+          'CONCOURSE_BAGGAGECLAIM_BIND_IP=0.0.0.0',
+          'CONCOURSE_BAGGAGECLAIM_DRIVER=overlay',
+          'CONCOURSE_CONTAINERD_DNS_PROXY_ENABLE=true',
+        ],
+        networksAdvanced: [{ name: internalNetwork.id }],
+        volumes: [
+          {
+            volumeName: concourseKeysVolume.name,
+            containerPath: '/concourse-keys',
+          },
+        ],
+      },
+      {
+        parent: this,
+        dependsOn: [internalNetwork, concourseImage, concourseKeysVolume],
       },
     );
 
