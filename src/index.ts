@@ -140,7 +140,7 @@ const frontend = new kube.core.v1.Service('nginx', {
 export let frontendIp: Output<string>;
 frontendIp = frontend.spec.clusterIP;
 
-const keda = new kube.helm.v3.Chart("keda", {
+new kube.helm.v3.Chart("keda", {
   repo: "kedacore",
   chart: "keda",
   fetchOpts: {
@@ -149,7 +149,7 @@ const keda = new kube.helm.v3.Chart("keda", {
 }, {
   provider: k3s,
 });
-const kedaHttp = new kube.helm.v3.Chart("keda-http", {
+new kube.helm.v3.Chart("keda-http", {
   repo: "kedacore",
   chart: "keda-add-ons-http",
   fetchOpts: {
