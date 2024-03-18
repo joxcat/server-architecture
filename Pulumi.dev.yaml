@@ -1,4 +1,6 @@
 config:
+  pulumi:disable-default-providers:
+    - aws
   server-architecture:coder.access_url:
     secure: AAABALdWGpcgDvpV+uEkGJ/EcKAoTBhl2QV6OVhXYL9i89Tm+zCCHVcGibaXQhh4DvYp5J3bWQ==
   server-architecture:coder.docker_group_id:
