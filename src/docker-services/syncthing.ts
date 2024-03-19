@@ -75,18 +75,18 @@ export class SyncthingDockerService extends ComponentResource {
       },
     );
     const syncthingDataVolume = new Volume(
-        'syncthing-data',
-        {
-          driver: 'rclone:latest',
-          driverOpts: {
-            ...dockerDriverOpts,
-            path: join(args.sftp_base_path, 'syncthing/data'),
-          },
+      'syncthing-data',
+      {
+        driver: 'rclone:latest',
+        driverOpts: {
+          ...dockerDriverOpts,
+          path: join(args.sftp_base_path, 'syncthing/data'),
         },
-        {
-          parent: this,
-        },
-      );
+      },
+      {
+        parent: this,
+      },
+    );
 
     const syncthingContainer = new Container(
       'syncthing',
@@ -94,34 +94,35 @@ export class SyncthingDockerService extends ComponentResource {
         image: syncthingImage.sha256Digest,
         restart: 'unless-stopped',
         hostname: args.hostname ?? 'syncthing',
-        envs: [
-          'PUID=1000',
-          'PGID=1000',
-          'TZ=Europe/Paris',
+        envs: ['PUID=1000', 'PGID=1000', 'TZ=Europe/Paris'],
+        ports: [
+          {
+            internal: 22000,
+            external: 22000,
+            protocol: 'tcp',
+          },
+          {
+            internal: 22000,
+            external: 22000,
+            protocol: 'udp',
+          },
+          {
+            internal: 21027,
+            external: 21027,
+            protocol: 'udp',
+          },
         ],
-        ports: [{
-          internal: 22000,
-          external: 22000,
-          protocol: 'tcp',
-        }, {
-          internal: 22000,
-          external: 22000,
-          protocol: 'udp',
-        }, {
-          internal: 21027,
-          external: 21027,
-          protocol: 'udp',
-        }],
-        volumes: [{
-          volumeName: syncthingConfigVolume.name,
-          containerPath: '/config',
-        }, {
-          volumeName: syncthingDataVolume.name,
-          containerPath: '/data',
-        }],
-        networksAdvanced: [
-          { name: args.network.id },
+        volumes: [
+          {
+            volumeName: syncthingConfigVolume.name,
+            containerPath: '/config',
+          },
+          {
+            volumeName: syncthingDataVolume.name,
+            containerPath: '/data',
+          },
         ],
+        networksAdvanced: [{ name: args.network.id }],
       },
       {
         parent: this,

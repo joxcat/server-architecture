@@ -75,19 +75,15 @@ export class GrafanaDockerService extends ComponentResource {
         parent: this,
       },
     );
-    
+
     const grafanaContainer = new Container(
       'grafana',
       {
         image: grafanaImage.sha256Digest,
         restart: 'unless-stopped',
         hostname: args.hostname ?? 'grafana',
-        envs: [
-          interpolate`GF_INSTALL_PLUGINS=${args.grafanaPlugins ?? ''}`,
-        ],
-        networksAdvanced: [
-          { name: args.network.id },
-        ],
+        envs: [interpolate`GF_INSTALL_PLUGINS=${args.grafanaPlugins ?? ''}`],
+        networksAdvanced: [{ name: args.network.id }],
         volumes: [
           {
             volumeName: grafanaDataVolume.name,
@@ -97,16 +93,12 @@ export class GrafanaDockerService extends ComponentResource {
       },
       {
         parent: this,
-        dependsOn: [
-          args.network,
-          grafanaImage,
-          grafanaDataVolume,
-        ],
+        dependsOn: [args.network, grafanaImage, grafanaDataVolume],
       },
     );
 
     return Promise.resolve({
-        grafanaContainer,
+      grafanaContainer,
     });
   }
 }

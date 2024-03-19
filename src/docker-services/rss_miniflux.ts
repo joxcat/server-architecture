@@ -98,18 +98,20 @@ export class RssMinifluxDockerService extends ComponentResource {
         restart: 'unless-stopped',
         hostname: 'miniflux-database',
         envs: [
-            'POSTGRES_USER=miniflux',
-            interpolate`POSTGRES_PASSWORD=${args.postgresPassword}`,
+          'POSTGRES_USER=miniflux',
+          interpolate`POSTGRES_PASSWORD=${args.postgresPassword}`,
         ],
         networksAdvanced: [{ name: internalNetwork.id }],
-        volumes: [{
-          volumeName: minifluxDataVolume.name,
-          containerPath: '/var/lib/postgresql/data',
-        }],
+        volumes: [
+          {
+            volumeName: minifluxDataVolume.name,
+            containerPath: '/var/lib/postgresql/data',
+          },
+        ],
         healthcheck: {
-            tests: ["CMD", "pg_isready", "-U", "miniflux"],
-            interval: "10s",
-            startPeriod: "30s",
+          tests: ['CMD', 'pg_isready', '-U', 'miniflux'],
+          interval: '10s',
+          startPeriod: '30s',
         },
       },
       {
@@ -124,8 +126,8 @@ export class RssMinifluxDockerService extends ComponentResource {
         restart: 'unless-stopped',
         hostname: args.hostname ?? 'miniflux',
         envs: [
-            interpolate`DATABASE_URL=postgres://${minifluxDatabaseContainer.hostname}:${args.postgresPassword}@miniflux_database/miniflux?sslmode=disable`,
-            'RUN_MIGRATIONS=1',
+          interpolate`DATABASE_URL=postgres://${minifluxDatabaseContainer.hostname}:${args.postgresPassword}@miniflux_database/miniflux?sslmode=disable`,
+          'RUN_MIGRATIONS=1',
         ],
         networksAdvanced: [
           { name: args.network.id },
@@ -134,11 +136,7 @@ export class RssMinifluxDockerService extends ComponentResource {
       },
       {
         parent: this,
-        dependsOn: [
-          args.network,
-          internalNetwork,
-          minifluxImage,
-        ],
+        dependsOn: [args.network, internalNetwork, minifluxImage],
       },
     );
 

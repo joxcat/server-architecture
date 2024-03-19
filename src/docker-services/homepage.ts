@@ -74,20 +74,15 @@ export class HomepageDockerService extends ComponentResource {
         parent: this,
       },
     );
-    
+
     const homepageContainer = new Container(
       'homepage',
       {
         image: homepageImage.sha256Digest,
         restart: 'unless-stopped',
         hostname: args.hostname ?? 'homepage',
-        envs: [
-          'PUID=1000',
-          'PGID=1000',
-        ],
-        networksAdvanced: [
-          { name: args.network.id },
-        ],
+        envs: ['PUID=1000', 'PGID=1000'],
+        networksAdvanced: [{ name: args.network.id }],
         volumes: [
           {
             volumeName: homepageConfigVolume.name,
@@ -97,16 +92,12 @@ export class HomepageDockerService extends ComponentResource {
       },
       {
         parent: this,
-        dependsOn: [
-          args.network,
-          homepageImage,
-          homepageConfigVolume,
-        ],
+        dependsOn: [args.network, homepageImage, homepageConfigVolume],
       },
     );
 
     return Promise.resolve({
-        homepageContainer,
+      homepageContainer,
     });
   }
 }

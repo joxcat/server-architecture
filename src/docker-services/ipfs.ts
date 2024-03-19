@@ -74,30 +74,29 @@ export class IpfsDockerService extends ComponentResource {
         parent: this,
       },
     );
-    
+
     const ipfsContainer = new Container(
       'ipfs',
       {
         image: ipfsImage.sha256Digest,
         restart: 'unless-stopped',
         hostname: args.hostname ?? 'ipfs',
-        envs: [
-          'IPFS_PROFILE=server',
+        envs: ['IPFS_PROFILE=server'],
+        ports: [
+          {
+            ip: '0.0.0.0',
+            internal: 4001,
+            external: 4001,
+            protocol: 'tcp',
+          },
+          {
+            ip: '0.0.0.0',
+            internal: 4001,
+            external: 4001,
+            protocol: 'udp',
+          },
         ],
-        ports: [{
-          ip: '0.0.0.0',
-          internal: 4001,
-          external: 4001,
-          protocol: 'tcp',
-        }, {
-          ip: '0.0.0.0',
-          internal: 4001,
-          external: 4001,
-          protocol: 'udp',
-        }],
-        networksAdvanced: [
-          { name: args.network.id },
-        ],
+        networksAdvanced: [{ name: args.network.id }],
         volumes: [
           {
             volumeName: ipfsDataVolume.name,
@@ -107,11 +106,7 @@ export class IpfsDockerService extends ComponentResource {
       },
       {
         parent: this,
-        dependsOn: [
-          args.network,
-          ipfsImage,
-          ipfsDataVolume,
-        ],
+        dependsOn: [args.network, ipfsImage, ipfsDataVolume],
       },
     );
 

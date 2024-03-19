@@ -91,11 +91,7 @@ export class PolrDockerService extends ComponentResource {
       },
     );
 
-    const internalNetwork = new Network(
-      'polr-internal',
-      {},
-      { parent: this },
-    );
+    const internalNetwork = new Network('polr-internal', {}, { parent: this });
 
     const polrDatabaseContainer = new Container(
       'polr-database',
@@ -104,16 +100,18 @@ export class PolrDockerService extends ComponentResource {
         restart: 'unless-stopped',
         hostname: 'polr-database',
         envs: [
-          "MYSQL_DATABASE=polr", 
-          "MYSQL_USER=polr",
+          'MYSQL_DATABASE=polr',
+          'MYSQL_USER=polr',
           interpolate`MYSQL_PASSWORD=${args.polrConfig.mysqlPassword}`,
-          "MYSQL_RANDOM_ROOT_PASSWORD=yes"
+          'MYSQL_RANDOM_ROOT_PASSWORD=yes',
         ],
         networksAdvanced: [{ name: internalNetwork.id }],
-        volumes: [{
-          volumeName: polrDataVolume.name,
-          containerPath: '/var/lib/mysql',
-        }]
+        volumes: [
+          {
+            volumeName: polrDataVolume.name,
+            containerPath: '/var/lib/mysql',
+          },
+        ],
       },
       {
         parent: this,
@@ -133,7 +131,7 @@ export class PolrDockerService extends ComponentResource {
           interpolate`APP_ADDRESS=${args.polrConfig.appAddress}`,
           interpolate`ADMIN_USERNAME=${args.polrConfig.defaultAdminUsername}`,
           interpolate`ADMIN_PASSWORD=${args.polrConfig.defaultAdminPassword}`,
-          "SETTING_SHORTEN_PERMISSION=true"
+          'SETTING_SHORTEN_PERMISSION=true',
         ],
         networksAdvanced: [
           { name: args.network.id },
@@ -142,11 +140,7 @@ export class PolrDockerService extends ComponentResource {
       },
       {
         parent: this,
-        dependsOn: [
-          args.network,
-          internalNetwork,
-          polrImage,
-        ],
+        dependsOn: [args.network, internalNetwork, polrImage],
       },
     );
 

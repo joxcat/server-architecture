@@ -19,10 +19,10 @@ interface UmamiInputs {
   };
   sftp_base_path: string;
   hostname?: string;
-  umamiConfig: {  
+  umamiConfig: {
     postgresPassword: Output<string>;
     appSecret: Output<string>;
-  }
+  };
 }
 
 export class UmamiDockerService extends ComponentResource {
@@ -88,11 +88,7 @@ export class UmamiDockerService extends ComponentResource {
       },
     );
 
-    const internalNetwork = new Network(
-      'umami-internal',
-      {},
-      { parent: this },
-    );
+    const internalNetwork = new Network('umami-internal', {}, { parent: this });
 
     const umamiDatabaseContainer = new Container(
       'umami-database',
@@ -101,19 +97,21 @@ export class UmamiDockerService extends ComponentResource {
         restart: 'unless-stopped',
         hostname: 'umami-database',
         envs: [
-            'POSTGRES_DN=umami',
-            'POSTGRES_USER=umami',
-            interpolate`POSTGRES_PASSWORD=${args.umamiConfig.postgresPassword}`,
+          'POSTGRES_DN=umami',
+          'POSTGRES_USER=umami',
+          interpolate`POSTGRES_PASSWORD=${args.umamiConfig.postgresPassword}`,
         ],
         networksAdvanced: [{ name: internalNetwork.id }],
-        volumes: [{
-          volumeName: minifluxDataVolume.name,
-          containerPath: '/var/lib/postgresql/data',
-        }],
+        volumes: [
+          {
+            volumeName: minifluxDataVolume.name,
+            containerPath: '/var/lib/postgresql/data',
+          },
+        ],
         healthcheck: {
-            tests: ["CMD", "pg_isready", "-U", "umami"],
-            interval: "10s",
-            startPeriod: "30s",
+          tests: ['CMD', 'pg_isready', '-U', 'umami'],
+          interval: '10s',
+          startPeriod: '30s',
         },
       },
       {
@@ -128,9 +126,9 @@ export class UmamiDockerService extends ComponentResource {
         restart: 'unless-stopped',
         hostname: args.hostname ?? 'umami',
         envs: [
-            interpolate`DATABASE_URL=postgres://${umamiDatabaseContainer.hostname}:${args.umamiConfig.postgresPassword}@umami_database:5432/umami`,
-            'DATABASE_TYPE=postgresql',
-            interpolate`APP_SECRET=${args.umamiConfig.appSecret}`,
+          interpolate`DATABASE_URL=postgres://${umamiDatabaseContainer.hostname}:${args.umamiConfig.postgresPassword}@umami_database:5432/umami`,
+          'DATABASE_TYPE=postgresql',
+          interpolate`APP_SECRET=${args.umamiConfig.appSecret}`,
         ],
         networksAdvanced: [
           { name: args.network.id },
@@ -139,11 +137,7 @@ export class UmamiDockerService extends ComponentResource {
       },
       {
         parent: this,
-        dependsOn: [
-          args.network,
-          internalNetwork,
-          umamiImage,
-        ],
+        dependsOn: [args.network, internalNetwork, umamiImage],
       },
     );
 

@@ -109,7 +109,9 @@ export class OllamaDockerService extends ComponentResource {
         image: ollamaImage.sha256Digest,
         restart: 'unless-stopped',
         hostname: args.hostname ?? 'ollama',
-        envs: [interpolate`OLLAMA_API_BASE_URL=http://${ollamaRunnerContainer.hostname}:11434/api`],
+        envs: [
+          interpolate`OLLAMA_API_BASE_URL=http://${ollamaRunnerContainer.hostname}:11434/api`,
+        ],
         networksAdvanced: [
           { name: args.network.id },
           { name: internalNetwork.id },

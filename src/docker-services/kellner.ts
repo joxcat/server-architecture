@@ -74,7 +74,7 @@ export class KellnrDockerService extends ComponentResource {
         parent: this,
       },
     );
-    
+
     const kellnrContainer = new Container(
       'kellnr',
       {
@@ -82,14 +82,12 @@ export class KellnrDockerService extends ComponentResource {
         restart: 'unless-stopped',
         hostname: args.hostname ?? 'kellnr',
         envs: [
-          "KELLNR_ORIGIN__HOSTNAME=registry.tracto.pl",
-          "KELLNR_ORIGIN__PORT=443",
-          "KELLNR_ORIGIN__PROTOCOL=https",
-          "KELLNR_DOCS__ENABLED=true"
+          'KELLNR_ORIGIN__HOSTNAME=registry.tracto.pl',
+          'KELLNR_ORIGIN__PORT=443',
+          'KELLNR_ORIGIN__PROTOCOL=https',
+          'KELLNR_DOCS__ENABLED=true',
         ],
-        networksAdvanced: [
-          { name: args.network.id },
-        ],
+        networksAdvanced: [{ name: args.network.id }],
         volumes: [
           {
             volumeName: kellnrDataVolume.name,
@@ -99,11 +97,7 @@ export class KellnrDockerService extends ComponentResource {
       },
       {
         parent: this,
-        dependsOn: [
-          args.network,
-          kellnrImage,
-          kellnrDataVolume,
-        ],
+        dependsOn: [args.network, kellnrImage, kellnrDataVolume],
       },
     );
 

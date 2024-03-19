@@ -108,7 +108,7 @@ const sftpBaseParams = {
 // });
 
 const namespace = new kube.core.v1.Namespace('pulumi');
-const kubeconfig = readFileSync(process.env['KUBECONFIG'] ?? '').toString()
+const kubeconfig = readFileSync(process.env['KUBECONFIG'] ?? '').toString();
 const k3s = new kube.Provider('k3s', {
   kubeconfig,
   namespace: namespace.id,

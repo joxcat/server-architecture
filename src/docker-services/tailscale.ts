@@ -63,21 +63,17 @@ export class TailscaleDockerService extends ComponentResource {
           'TS_STATE_DIR=/var/lib/tailscale',
           interpolate`TS_AUTHKEY=${args.tailscaleAuthKey}`,
         ],
-        volumes: [{
-          volumeName: tailscaleDataVolume.name,
-          containerPath: '/var/lib/tailscale',
-        }],
-        networksAdvanced: [
-          { name: args.network.id },
+        volumes: [
+          {
+            volumeName: tailscaleDataVolume.name,
+            containerPath: '/var/lib/tailscale',
+          },
         ],
+        networksAdvanced: [{ name: args.network.id }],
       },
       {
         parent: this,
-        dependsOn: [
-          args.network,
-          tailscaleImage,
-          tailscaleDataVolume,
-        ],
+        dependsOn: [args.network, tailscaleImage, tailscaleDataVolume],
       },
     );
 
