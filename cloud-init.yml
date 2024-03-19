@@ -38,19 +38,19 @@ write_files:
         "ip6tables": true
       }
     owner: root:root
-    permissions: '0644'
+    permissions: "0644"
   - path: /etc/fail2ban/jail.local
     content: |
       [sshd]
       enabled = true
       banaction = iptables-multiport
     owner: root:root
-    permissions: '0644'
+    permissions: "0644"
   - path: /etc/environment
     content: |
-      KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+      KUBECONFIG=~/.kube/config
     owner: root:root
-    permissions: '0644'
+    permissions: "0644"
 runcmd:
   # Enable fail2ban
   - systemctl enable fail2ban
@@ -73,6 +73,12 @@ runcmd:
   - systemctl enable docker
   # Install k3s
   - curl -sfL https://get.k3s.io | sh -
+  - mkdir /home/johan/kube && cat /etc/rancher/k3s/k3s.yaml > /home/johan/.kube/config && chown johan:johan -R /home/johan/.kube
+  # Install Keda
+  - helm repo add kedacore https://kedacore.github.io/charts
+  - helm repo update
+  - helm install keda kedacore/keda --namespace keda --create-namespace
+  - helm install http-add-on kedacore/keda-add-ons-http --namespace keda
   # Clone base repos
   - cd /home/johan
   - sudo -u johan sh -c 'git clone https://github.com/joxcat/server-architecture.git'

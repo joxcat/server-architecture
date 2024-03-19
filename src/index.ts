@@ -1,4 +1,4 @@
-import { Config, Output } from '@pulumi/pulumi';
+import { Config, Output, interpolate } from '@pulumi/pulumi';
 import * as docker from '@pulumi/docker';
 import * as kube from '@pulumi/kubernetes';
 
@@ -105,16 +105,18 @@ const sftpBaseParams = {
 //   tailscaleAuthKey: config.requireSecret('tailscale.auth_key'),
 // });
 
+const namespace = 'keda';
 const k3s = new kube.Provider('k3s', {
-  kubeconfig: readFileSync(process.env['KUBECONFIG'] ?? '').toString()
+  kubeconfig: readFileSync(process.env['KUBECONFIG'] ?? '').toString(),
+  namespace,
 });
 
 const image = new docker.RemoteImage('nginx', {
   name: 'nginx:latest',
 })
-const nginx = new kube.apps.v1.Deployment('nginx', {
+const nginxDeployment = new kube.apps.v1.Deployment('nginx', {
   spec: {
-    selector: { matchLabels: { app:'nginx' } },
+    selector: { matchLabels: { app: 'nginx' } },
     replicas: 1,
     template: {
       metadata: { labels: { app: 'nginx' } },
@@ -127,55 +129,58 @@ const nginx = new kube.apps.v1.Deployment('nginx', {
 }, {
   provider: k3s,
 });
-const frontend = new kube.core.v1.Service('nginx', {
-  metadata: { labels: nginx.spec.template.metadata.labels },
+const nginxService = new kube.core.v1.Service('nginx', {
+  metadata: {
+    labels: nginxDeployment.spec.template.metadata.labels,
+  },
   spec: {
     type: "ClusterIP",
-    ports: [{ port: 80, targetPort: 80, protocol: "TCP" }],
+    ports: [{ port: 8080, targetPort: 80, protocol: "TCP" }],
     selector: { app: 'nginx' },
   },
 }, {
   provider: k3s,
 });
-export let frontendIp: Output<string>;
-frontendIp = frontend.spec.clusterIP;
 
-new kube.helm.v3.Chart("keda", {
-  repo: "kedacore",
-  chart: "keda",
-  fetchOpts: {
-    repo: "https://kedacore.github.io/charts",
-  },
-}, {
-  provider: k3s,
-});
-new kube.helm.v3.Chart("keda-http", {
-  repo: "kedacore",
-  chart: "keda-add-ons-http",
-  fetchOpts: {
-    repo: "https://kedacore.github.io/charts",
-  },
-}, {
-  provider: k3s,
-});
-const httpScaledObject = new kube.apiextensions.CustomResource('scaled-object', {
+const nginxScaledObject = new kube.apiextensions.CustomResource('nginx-autoscale', {
   kind: 'HTTPScaledObject',
   apiVersion: 'http.keda.sh/v1alpha1',
   metadata: {
     name: 'nginx',
   },
   spec: {
+    hosts: ["example.org"],
     scaleTargetRef: { 
-      name: "nginx",
+      name: nginxDeployment.metadata.name,
       kind: "Deployment",
-      service: "nginx",
-      port: 80,
+      service: nginxService.metadata.name,
+      port: 8080,
     },
     replicas: {
       min: 0,
       max: 2,
     },
-    scaledownPeriod: 30,
+  },
+}, {
+  provider: k3s,
+});
+
+const nginxTraefik = new kube.apiextensions.CustomResource('nginx-proxy', {
+  kind: 'IngressRoute',
+  apiVersion: 'traefik.io/v1alpha1',
+  metadata: {
+    name: 'nginx-proxy',
+  },
+  spec: {
+    entryPoints: ['web'],
+    routes: [{
+      match: 'Host(`example.org`)',
+      kind: 'Rule',
+      services: [{
+        name: 'keda-add-ons-http-interceptor-proxy',
+        port: 8080,
+      }],
+    }]
   }
 }, {
   provider: k3s,

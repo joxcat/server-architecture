@@ -2,44 +2,46 @@ config:
   pulumi:disable-default-providers:
     - aws
   server-architecture:coder.access_url:
-    secure: AAABALdWGpcgDvpV+uEkGJ/EcKAoTBhl2QV6OVhXYL9i89Tm+zCCHVcGibaXQhh4DvYp5J3bWQ==
+    secure: AAABAHhbjKq4j1b+/AbxWjp/mB49uaJfoz7FXOBnJrj2jpP0NV0OEvRZDZbIclvaQChYwTJ9yA==
   server-architecture:coder.docker_group_id:
-    secure: AAABAAUuaMJIy/627waBqi3I/HDf1HyDjb8J4tAyWjwscFo=
+    secure: AAABAKLTiYqV5uP8q1hhSJgPTDgCi3/CsIU7L+mt9KhiZw8=
   server-architecture:coder.postgres_password:
-    secure: AAABAERJ6CyHetAlctnO7zhRX/IgteeunPnd5KfXUaogOkbrOA==
+    secure: AAABAOJ8CwO1c/r2dtrqd2czd93dhA284WkURWInchHAqF2Cvw==
   server-architecture:coder.wildcard_url:
-    secure: AAABAL/I8fIX6VrnynP89NqoWHIDMlf/kD1PzEwNudtOQ7gFXUCjVkJYRE7NRT7vGA==
+    secure: AAABAF3R/NPrclM8W8tLLG7X4ZwLZ5rAbvgjPmYQO04Gdck5piNkfgxgtv0wbWGQvA==
   server-architecture:concourse.add_local_user:
-    secure: AAABAKvF1bJr4zvY4+qcTZikXMbQkHNqgkWcyOvZXECZPcKChan4ZtwZbbPQAkbSYmexK59wQSgjNg==
+    secure: AAABABwuLH1269KosSs9TGRDmZTBtbdTcXBfNs2tP+99tcNxLhcou7281QAAE6Ftfdq89PWWh7kp7g==
+  server-architecture:concourse.concourse_add_local_user:
+    secure: AAABAD+82SUQw+sjRFb7F92Th7UQZEHYYrxKsAJZktWQCKgqrXmQKFuBVX9CR8o5wWc6DYN3rs6sbA==
   server-architecture:concourse.main_team_local_user:
-    secure: AAABAJtGhtZWmlFyiLmGvCK3NHCT+UubJyD6MMK0cFkKu1qmkQ==
+    secure: AAABACGSAC+ULRjCSnMcBcfwM4fg58YxBNNF3ezrO5HexIH7KQ==
   server-architecture:concourse.postgres_password:
-    secure: AAABAA3Ckinp/gBKaY3wKcrUhr+W2vZt+YT/B4dqM9HHTW8SOTTDMWI8XZVwkgJvJ+zF
+    secure: AAABAHZOmJwEd18GQ3CRRkIVqqD4P4WQAluHM3sZc6l4ncIqP4aUs56TBf/yc7rWvs5E
   server-architecture:docker.platform: linux/amd64
   server-architecture:filestash.config_secret:
-    secure: AAABAIkgODM9rhZiRTZpMg7+XIndjJtNvpTKQnfjWZxDt/kTvKmy1fcqUWE1pIYi0WVK
+    secure: AAABAFmLsxV807urNdwM9zh+6R20BuKqtq/oN72hxvL3TLc1Y+ibZhGI+GERyn7Lp0jy
   server-architecture:miniflux.postgres_password:
-    secure: AAABADMRxr3g5flXIqDjWA7VTGbesGCUw7dsRmT7amRKOUYpYEY=
+    secure: AAABAIHcbtHNTqzMJKIr1goGUtTc9oMYF8VJUN/qF/UTe7sUNUo=
   server-architecture:polr.app_address: reta.re
   server-architecture:polr.app_name: RetaRE
   server-architecture:polr.default_admin_password:
-    secure: AAABAKCu5BtXLf6xYdmOH9Zb1o+VMScjTJHnaC5MCucnuTk5Y4Bfe7BoQf+WAC3h
+    secure: AAABAEbKPwkx/xEk8gjUxSc1hLIb2e+lFz/ZwkDuUtpGhhzhxxCe2QXzyDaNIyBa
   server-architecture:polr.default_admin_username:
-    secure: AAABAH2sJFAMK90mtS9HgZxrl4Ed6KsCU9eQTbpuUKu6NB215Q==
+    secure: AAABALavWolsZE2mn4jLJNUEV/1vL8LvkhJbGGUKoWe2yZ8C8A==
   server-architecture:polr.mysql_password:
-    secure: AAABABF5wM4c//5PYrcNZwk3IwI8RgggWgvEjHd29ZqmMN7g
+    secure: AAABADIQBTno5uA7dyiYQQ5LqhH7J5UDMAk6d5RznV6MBvBl
   server-architecture:sftp.base_path: /home
   server-architecture:sftp.host:
-    secure: AAABAPOpeQEKuIeYdXsxZnRCAUEWq2mhOBQhDnza9BAycWFAc7aJvfNch2xsN/Oa+OADgt8Ce3PTxQ==
+    secure: AAABAET5p5Jl1INcz63wYz23rTdkm9+T33pKh3uJBE0OqckPQm3Gi6zFuz/5u9STzmilh99vL6P8jw==
   server-architecture:sftp.password:
-    secure: AAABAEKEZefaxllAHugp8vSNRbrIx3vVetLx+Wbw1bhySuOJyTt8VGyu5TGqcW8n6zwyH/gfS8b9XyXk4hIWZZBmYSmGR2P+2fPE
+    secure: AAABADbjJiyp4rZVzOaurhIbZPE5aU5PHsVtz5/7hUjBahrnSXsBpluivoHTvM8I
   server-architecture:sftp.port:
-    secure: AAABAM+XbENkiaRxLvJddVaWhaIE0p/xoIIgS0143YCHaQ==
+    secure: AAABAJupr06yxQZCNf6x9WuHt0pNdgYDK6Q0a90zst2v+A==
   server-architecture:sftp.user:
-    secure: AAABALsCesA/THqA7hjR+yZog0M8+AGMXRipavOOZuoqwQ4Y8RQJ9E0n4DI=
+    secure: AAABAPP9HGH1HvrxQ5ZzBhcrTsqTVuG6US6hJ24JeupV1HrELJdm5EDYfmU=
   server-architecture:tailscale.auth_key:
-    secure: AAABAFaHcON5lx2bxlYyQ16jVjFHcj0Q44hVyDIfeR8ORe1z8MjwjYZhHTOA9J/9rsEHClcFL+c9NPqCS2M8EhkBYj/nMLnlYpmuWaLcK7tQnY4GnUOdJ8qLOqAz
+    secure: AAABAMVAI+6Tybiwx+L1NM2Grrau85MYafJl9ao7RcBcYPN7SV01L5+mpL7o4paxbsd/QCq0jgAkki3Y3Ef5CjMfkBrEfqOYOOvitcFS6MPkuRhnY+OOkMjnm9oY
   server-architecture:umami.app_secret:
-    secure: AAABADF6PpBOtXyIktBE5qUJqDgaAtw1OY5bpFLdxXVfDy1TM7IcyNIkIC+L0sYiA4ONAqeXtxu6nYuvtc3AoPqzHo7TFD6NbjRzF6Pa+PC5DuX736hkTNI=
+    secure: AAABAC2/Du9dno9bCVtInMX00DlClmENwWENmIQ+1Wkzgs5Gy90c270hzWml0N6KU/+rss2HUV0Et8O0xTyhocFWPyy1ZSIaX1l1dohTIL9q2+pQcZPIg6c=
   server-architecture:umami.postgres_password:
-    secure: AAABAMnt4uaNu0Ew719R3D8YPonj9WfRCC0qNBU05DNYHajImvUjshRePIbL24VBE8Uw
+    secure: AAABABiOFEZqFSS+xrxCIo1cSqFWaRiv53bVET2wrCXJl3gF/51FGU4xDN9ynLl6wPc1
