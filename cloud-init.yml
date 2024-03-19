@@ -26,6 +26,7 @@ packages:
   - docker-compose-plugin
   - zsh
   - python3
+  - fuse
 package_update: true
 package_upgrade: true
 write_files:
@@ -71,6 +72,10 @@ runcmd:
   #- sed -i '$a AllowUsers johan' /etc/ssh/sshd_config
   # Enable and config docker with ipv6
   - systemctl enable docker
+  # Add rclone volume plugin to docker
+  - mkdir -p /var/lib/docker-plugins/rclone/config
+  - mkdir -p /var/lib/docker-plugins/rclone/cache
+  - docker plugin install rclone/docker-volume-rclone:amd64 args="-v" --alias rclone --grant-all-permissions
   # Install k3s
   - curl -sfL https://get.k3s.io | sh -
   - mkdir /home/johan/kube && cat /etc/rancher/k3s/k3s.yaml > /home/johan/.kube/config && chown johan:johan -R /home/johan/.kube
