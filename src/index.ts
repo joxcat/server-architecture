@@ -21,6 +21,8 @@ import { HomepageDockerService } from './docker-services/homepage';
 import { GrafanaDockerService } from './docker-services/grafana';
 import { SyncthingDockerService } from './docker-services/syncthing';
 import { TailscaleDockerService } from './docker-services/tailscale';
+import { RssBridgeKubeService } from './kube-services/rss_bridge/rss_bridge';
+import { RegistryKubeService } from './kube-services/registry';
 import { readFileSync } from 'fs';
 
 const config = new Config();
@@ -103,4 +105,23 @@ const sftpBaseParams = {
 // new TailscaleDockerService('tailscale', {
 //   ...sftpBaseParams,
 //   tailscaleAuthKey: config.requireSecret('tailscale.auth_key'),
+// });
+
+const namespace = new kube.core.v1.Namespace('pulumi');
+const kubeconfig = readFileSync(process.env['KUBECONFIG'] ?? '').toString()
+const k3s = new kube.Provider('k3s', {
+  kubeconfig,
+  namespace: namespace.id,
+});
+
+new RegistryKubeService('registry', {
+  ...baseParams,
+  provider: k3s,
+  domain: config.require('registry.domain'),
+});
+
+// new RssBridgeKubeService('rss-bridge', {
+//   ...baseParams,
+//   provider: k3s,
+//   domain: config.require('rss_bridge.domain'),
 // });

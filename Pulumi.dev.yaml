@@ -30,6 +30,8 @@ config:
     secure: AAABALavWolsZE2mn4jLJNUEV/1vL8LvkhJbGGUKoWe2yZ8C8A==
   server-architecture:polr.mysql_password:
     secure: AAABADIQBTno5uA7dyiYQQ5LqhH7J5UDMAk6d5RznV6MBvBl
+  server-architecture:registry.domain: registry.planchon.dev
+  server-architecture:rss_bridge.domain: bridge.planchon.dev
   server-architecture:sftp.base_path: /home
   server-architecture:sftp.host:
     secure: AAABAET5p5Jl1INcz63wYz23rTdkm9+T33pKh3uJBE0OqckPQm3Gi6zFuz/5u9STzmilh99vL6P8jw==
