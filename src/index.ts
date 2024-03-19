@@ -105,10 +105,11 @@ const sftpBaseParams = {
 //   tailscaleAuthKey: config.requireSecret('tailscale.auth_key'),
 // });
 
-const namespace = 'keda';
+const namespace = new kube.core.v1.Namespace('nginx');
+const kubeconfig = readFileSync(process.env['KUBECONFIG'] ?? '').toString()
 const k3s = new kube.Provider('k3s', {
-  kubeconfig: readFileSync(process.env['KUBECONFIG'] ?? '').toString(),
-  namespace,
+  kubeconfig,
+  namespace: namespace.id,
 });
 
 const image = new docker.RemoteImage('nginx', {
@@ -170,6 +171,7 @@ const nginxTraefik = new kube.apiextensions.CustomResource('nginx-proxy', {
   apiVersion: 'traefik.io/v1alpha1',
   metadata: {
     name: 'nginx-proxy',
+    namespace: 'keda',
   },
   spec: {
     entryPoints: ['web'],
